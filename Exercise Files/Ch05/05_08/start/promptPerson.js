@@ -11,16 +11,31 @@ var realPerson = {
 rl.question("What is the name of a real person? ", function(answer) {
 
 	realPerson.name = answer;
+	var stream = fs.createWriteStream(realPerson.name + '.md');
 
-	//
-	//	TODO: Use a Writable Stream
-	//
+	stream.write(`${realPerson.name}\n====================\n\n`);
 
+	// fs.writeFileSync(realPerson.name + '.md', `${realPerson.name}\n====================\n\n`);
 
-		//
-		//TODO: Write to the stream
-		//
+	rl.setPrompt(`What would ${realPerson.name} say? `);
+
+	rl.prompt();
+
+	rl.on('line', function(saying) {
+
 		
+
+		// fs.appendFile(realPerson.name + '.md', `*${saying.trim()} \n`);
+		if (saying.toLowerCase().trim() === 'exit') {
+			stream.close();
+			rl.close();
+		} else {
+			realPerson.sayings.push(saying.trim());
+			stream.write(`*${saying.trim()} \n`);
+			rl.setPrompt(`What else would ${realPerson.name} say? ('exit' to leave) `);
+		    rl.prompt();
+		}
+
 	});
 
 });
