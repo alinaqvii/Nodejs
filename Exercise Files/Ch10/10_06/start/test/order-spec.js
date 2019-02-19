@@ -19,8 +19,13 @@ describe("Ordering Items", function() {
 			log: sinon.spy()
 		};
 
+		this.warehouse = {
+			packageAndShip: sinon.stub().yields(10987654321)
+		};
+
 		order.__set__("inventoryData", this.testData);
 		order.__set__("console", this.console);
+		order.__set__('warehouse', this.warehouse);
 
 	});
 
@@ -34,7 +39,24 @@ describe("Ordering Items", function() {
 
 			done();
 		});
+		
 
+	});
+
+	describe('Warehouse Interaction', function(){
+
+		
+		beforeEach(function(){
+			this.callback = sinon.spy();
+			order.orderItem('CCC', 2, this.callback);
+		});
+
+		it('receives a tracking number', function(){
+			expect(this.callback.calledWith(10987654321)).to.equal(true);
+		});
+
+		it('calls package and shipping with the correct sku and quantity');
+			expect(this.warehouse.packageAndShip.calledWith('CCC', 2)).to.equal(true);
 	});
 
 });
