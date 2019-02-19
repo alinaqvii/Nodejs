@@ -15,6 +15,6 @@
     "Cheerio"
   ],
   "devDependencies": {
-    "chai": "^3.4.0"
+    "chai": "^3.5.0"
   }
 }
